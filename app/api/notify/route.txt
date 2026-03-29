@@ -1,0 +1,74 @@
+import { Resend } from 'resend';
+import { NextRequest, NextResponse } from 'next/server';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@dwyrex.com';
+
+export async function POST(req: NextRequest) {
+  try {
+    const { type, data } = await req.json();
+
+    let subject = '';
+    let html = '';
+
+    if (type === 'contact') {
+      subject = `?? New Contact: ${data.name}`;
+      html = `<div style="font-family:Georgia;background:#050508;color:white;padding:40px;border-radius:16px;">
+        <h1 style="color:#d4af37;">?? New Contact Form</h1>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Phone:</strong> ${data.phone || '-'}</p>
+        <p><strong>Type:</strong> ${data.type}</p>
+        <p><strong>Message:</strong> ${data.message || '-'}</p>
+      </div>`;
+    }
+
+    if (type === 'facility') {
+      subject = `?? New Facility: ${data.owner_name} - ${data.gpu_count || '?'} GPUs`;
+      html = `<div style="font-family:Georgia;background:#050508;color:white;padding:40px;border-radius:16px;">
+        <h1 style="color:#d4af37;">?? New Facility Application</h1>
+        <p><strong>Owner:</strong> ${data.owner_name}</p>
+        <p><strong>Email:</strong> ${data.owner_email}</p>
+        <p><strong>Location:</strong> ${data.city || '?'}, ${data.country || '?'}</p>
+        <p><strong>GPU:</strong> ${data.gpu_count || '?'} x ${data.gpu_type || 'GPU'}</p>
+        <p><strong>Expected Rent:</strong> ${data.monthly_rent_expectation || '-'}</p>
+      </div>`;
+    }
+
+    if (type === 'gpu_renter') {
+      subject = `??? New GPU Request: ${data.contact_name}`;
+      html = `<div style="font-family:Georgia;background:#050508;color:white;padding:40px;border-radius:16px;">
+        <h1 style="color:#d4af37;">??? New GPU Rental Request</h1>
+        <p><strong>Company:</strong> ${data.company_name || '-'}</p>
+        <p><strong>Contact:</strong> ${data.contact_name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>GPU Need:</strong> ${data.gpu_count_needed || '?'} x ${data.gpu_type_needed || 'GPU'}</p>
+        <p><strong>Budget:</strong> ${data.budget || '-'}</p>
+      </div>`;
+    }
+
+    if (type === 'subscriber') {
+      subject = `?? New Subscriber: ${data.email}`;
+      html = `<div style="font-family:Georgia;background:#050508;color:white;padding:40px;border-radius:16px;">
+        <h1 style="color:#d4af37;">?? New Subscriber</h1>
+        <p>${data.email}</p>
+      </div>`;
+    }
+
+    if (!subject) {
+      return NextResponse.json({ error: 'Unknown type' }, { status: 400 });
+    }
+
+    await resend.emails.send({
+      from: 'DWYREX <onboarding@resend.dev>',
+      to: ADMIN_EMAIL,
+      subject,
+      html,
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    console.error('Email error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

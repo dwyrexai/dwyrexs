@@ -1,11 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://iobafnykjghgjfoysqnq.supabase.co";
 
-if (!supabaseUrl || !supabaseKey) {
-  console.error('❌ ENV VARLIKLARI EKSİK! Lütfen .env.local dosyasını kontrol et.');
-  throw new Error('Supabase URL veya ANON_KEY boş. Lütfen .env.local dosyasını kontrol et.');
-}
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_OTYxHeHrJsmKSTyrgapKkA_gjTp5gfZ";
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

@@ -1,0 +1,41 @@
+"use client";
+
+export default function ShareButtons({ title, slug }: { title: string; slug: string }) {
+  const url = typeof window !== "undefined" ? `${window.location.origin}/blog/${slug}` : "";
+  
+  const shareLinks = [
+    {
+      name: "Twitter",
+      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+      icon: "𝕏",
+    },
+    {
+      name: "LinkedIn",
+      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+      icon: "in",
+    },
+    {
+      name: "WhatsApp",
+      url: `https://wa.me/?text=${encodeURIComponent(title + " " + url)}`,
+      icon: "📱",
+    },
+  ];
+
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-sm text-gray-500">Paylaş:</span>
+      {shareLinks.map((link) => (
+        <a
+          key={link.name}
+          href={link.url}
+          target="_blank"
+          rel="noreferrer"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm transition hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+          title={link.name}
+        >
+          {link.icon}
+        </a>
+      ))}
+    </div>
+  );
+}
