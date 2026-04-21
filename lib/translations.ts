@@ -2,309 +2,43 @@ export type Lang = 'en' | 'tr';
 
 export const translations = {
   en: {
-    nav: {
-      howItWorks: 'How It Works',
-      calculator: 'Calculator',
-      gpuPricing: 'GPU Pricing',
-      listFacility: 'List Facility',
-      rentGpus: 'Rent GPUs',
-      blog: 'Blog',
-      contact: 'Contact',
-      getStarted: 'Get Started'
-    },
-    hero: {
-      subtitle: 'Transform idle mining infrastructure into profitable AI compute centers.',
-      highlight: 'The King of Compute',
-      calcBtn: 'Calculate Profit',
-      contactBtn: 'Contact Us'
-    },
+    nav: { howItWorks: 'How It Works', calculator: 'Calculator', gpuPricing: 'GPU Pricing', listFacility: 'List Facility', rentGpus: 'Rent GPUs', blog: 'Blog', contact: 'Contact', getStarted: 'GET STARTED' },
+    hero: { subtitle: 'Connect your idle GPU facility with AI companies that need compute power.', highlight: 'Earn more than mining. Zero risk.', calcBtn: 'CALCULATE EARNINGS', contactBtn: 'CONTACT US' },
     stats: [
-      { i: '🌍', n: 'Global', l: 'Network' },
-      { i: '⚡', n: '99.9%', l: 'Uptime' },
-      { i: '🔒', n: 'Enterprise', l: 'Security' },
-      { i: '💎', n: 'Premium', l: 'Support' }
+      { i: '⚡', n: '70%', l: 'CHEAPER THAN AWS' },
+      { i: '🔒', n: 'GDPR', l: 'COMPLIANT' },
+      { i: '🌍', n: '24/7', l: 'SUPPORT' },
+      { i: '🚀', n: '<48H', l: 'SETUP TIME' },
     ],
-    problem: {
-      title: 'The Problem',
-      titleGold: 'vs The Solution',
-      miningTitle: 'Traditional Mining',
-      mining: ['High electricity costs', 'Hardware depreciation', 'Network difficulty increases', 'Low profitability'],
-      dwyrexTitle: 'DWYREX Model',
-      dwyrex: ['Zero electricity cost', 'Guaranteed rental income', 'AI market demand surge', 'Passive revenue stream']
-    },
-    how: {
-      title: 'How It',
-      titleGold: 'Works',
-      steps: [
-        { s: '01', i: '📋', t: 'Apply', d: 'Submit your facility or GPU rental request.' },
-        { s: '02', i: '🔍', t: 'Verify', d: 'Our team verifies your hardware and location.' },
-        { s: '03', i: '🤝', t: 'Agreement', d: 'Sign a secure, transparent rental contract.' },
-        { s: '04', i: '🚀', t: 'Deploy', d: 'We connect your GPUs to our AI compute network.' },
-        { s: '05', i: '💰', t: 'Earn', d: 'Receive monthly payouts automatically.' }
-      ]
-    },
-    calc: {
-      title: 'Profit',
-      titleGold: 'Calculator',
-      gpuType: 'Select GPU Model',
-      gpuCount: 'Number of GPUs',
-      miningLabel: 'Traditional Mining Loss',
-      dwyrexLabel: 'DWYREX Rental Income',
-      annualLabel: 'Annual Projected Revenue'
-    },
-    pricing: {
-      title: 'GPU',
-      titleGold: 'Pricing',
-      subtitle: 'Compare our rates with major cloud providers. Save up to 70%.'
-    },
-    trust: {
-      title: 'Why',
-      titleGold: 'Trust Us',
-      items: [
-        { i: '🛡️', t: 'Secure Contracts', d: 'Legally binding agreements with transparent terms.' },
-        { i: '⚡', t: 'Instant Payouts', d: 'Monthly automated payments directly to your account.' },
-        { i: '🌐', t: 'Global Network', d: 'Connected to top AI research and enterprise clients.' },
-        { i: '🔧', t: '24/7 Support', d: 'Dedicated technical and account management team.' }
-      ]
-    },
-    subscribe: {
-      title: 'Stay',
-      titleGold: 'Updated',
-      subtitle: 'Get the latest AI compute market insights and rental opportunities.',
-      placeholder: 'Enter your email',
-      btn: 'Subscribe',
-      success: 'Thank you! You have been subscribed successfully.'
-    },
-    facilityForm: {
-      title: 'List Your',
-      titleGold: 'Facility',
-      subtitle: 'Turn your idle mining farm into a profitable AI data center.',
-      ownerName: 'Owner Name',
-      ownerEmail: 'Owner Email',
-      ownerPhone: 'Owner Phone',
-      country: 'Country',
-      city: 'City',
-      gpuType: 'GPU Type',
-      gpuCount: 'GPU Count',
-      gpuCondition: 'GPU Condition',
-      electricityCost: 'Electricity Cost ($/kWh)',
-      coolingQ: 'Cooling System?',
-      internetQ: 'High-Speed Internet?',
-      yes: 'Yes',
-      no: 'No',
-      facilitySize: 'Facility Size (sqm)',
-      rentExpect: 'Monthly Rent Expectation ($)',
-      notes: 'Additional Notes',
-      submit: 'Submit Application',
-      submitting: 'Submitting...',
-      successTitle: 'Application Received',
-      successSub: 'Our team will review your facility and contact you within 24 hours.'
-    },
-    rentForm: {
-      title: 'Rent',
-      titleGold: 'GPUs',
-      subtitle: 'Access high-performance GPUs for your AI workloads at competitive rates.',
-      company: 'Company Name',
-      contact: 'Contact Name',
-      email: 'Email',
-      phone: 'Phone',
-      gpuType: 'GPU Type Needed',
-      gpuCount: 'GPU Count Needed',
-      usage: 'Usage Type',
-      usageOptions: [
-        { v: 'ai_training', l: 'AI Training' },
-        { v: 'inference', l: 'Inference' },
-        { v: 'rendering', l: '3D Rendering' },
-        { v: 'other', l: 'Other' }
-      ],
-      budget: 'Budget Range',
-      budgetOptions: [
-        { v: '1k-5k', l: '$1,000 - $5,000' },
-        { v: '5k-20k', l: '$5,000 - $20,000' },
-        { v: '20k+', l: '$20,000+' }
-      ],
-      duration: 'Rental Duration',
-      durationOptions: [
-        { v: '1-3m', l: '1-3 Months' },
-        { v: '3-6m', l: '3-6 Months' },
-        { v: '6-12m', l: '6-12 Months' },
-        { v: '12m+', l: '12+ Months' }
-      ],
-      notes: 'Project Details / Notes',
-      submit: 'Request Quote',
-      submitting: 'Sending...',
-      successTitle: 'Request Submitted',
-      successSub: 'We will prepare a custom quote and contact you shortly.'
-    },
-    contact: {
-      title: 'Contact',
-      titleGold: 'Us',
-      subtitle: 'Have questions? Reach out to our team.',
-      name: 'Your Name',
-      email: 'Your Email',
-      phone: 'Phone Number',
-      typeOptions: ['General Inquiry', 'Facility Listing', 'GPU Rental', 'Partnership', 'Support'],
-      message: 'Your Message',
-      submit: 'Send Message',
-      submitting: 'Sending...',
-      successTitle: 'Message Sent',
-      successSub: 'Thank you! We will get back to you within 24 hours.'
-    },
-    footer: {
-      tagline: 'THE KING OF COMPUTE'
-    }
+    problem: { title: 'Mining is', titleGold: 'Dead', miningTitle: '❌ GPU Mining', mining: ['Electricity costs exceed revenue', 'Crypto volatility destroys profits', 'Hardware depreciates fast', 'No stable income'], dwyrexTitle: '✅ DWYREX', dwyrex: ['Stable monthly income', 'AI demand growing 300% YoY', 'Your hardware, our clients', 'Full GDPR/KVKK compliance'] },
+    how: { title: 'How It', titleGold: 'Works', steps: [{ s: '01', i: '📋', t: 'List Your Facility', d: 'Submit your GPU specs, location, and availability.' }, { s: '02', i: '🔍', t: 'We Match You', d: 'Our team connects you with verified AI companies.' }, { s: '03', i: '📝', t: 'Sign Agreement', d: 'Simple SLA with guaranteed monthly payments.' }, { s: '04', i: '💰', t: 'Earn Monthly', d: 'Receive stable income every month. No hassle.' }] },
+    calc: { title: 'Calculate Your', titleGold: 'Earnings', gpuType: 'GPU TYPE', gpuCount: 'GPU COUNT', miningLabel: 'MINING LOSS/MONTH', dwyrexLabel: 'DWYREX EARNINGS/MONTH', annualLabel: 'ANNUAL EARNINGS' },
+    pricing: { title: 'How Much Can You', titleGold: 'Earn', subtitle: 'Our rates vs cloud provider pricing' },
+    trust: { title: 'Why', titleGold: 'Trust Us', items: [{ i: '🔒', t: 'GDPR & KVKK', d: 'Full compliance with EU and Turkish data protection laws.' }, { i: '📋', t: 'Legal SLA', d: 'Binding service level agreements protect both parties.' }, { i: '💳', t: 'Guaranteed Pay', d: 'Monthly payments guaranteed regardless of utilization.' }, { i: '🛡️', t: 'Insurance', d: 'Hardware insurance included in all contracts.' }] },
+    subscribe: { title: 'Stay', titleGold: 'Updated', subtitle: 'Get notified about new opportunities and GPU market insights.', placeholder: 'your@email.com', btn: 'SUBSCRIBE', success: '✅ You are subscribed!' },
+    facilityForm: { title: 'List Your', titleGold: 'Facility', subtitle: 'Submit your GPU facility details and our team will contact you within 48 hours.', ownerName: 'Full Name *', ownerEmail: 'Email *', ownerPhone: 'Phone', country: 'Country *', city: 'City', gpuType: 'GPU Type', gpuCount: 'GPU Count *', gpuCondition: 'GPU Condition', electricityCost: 'Electricity Cost ($/kWh)', coolingQ: 'Cooling System?', internetQ: 'Internet Connection?', yes: 'Yes', no: 'No', facilitySize: 'Facility Size (m²)', rentExpect: 'Monthly Rent Expectation ($)', notes: 'Additional Notes', submit: 'SUBMIT FACILITY', submitting: 'SUBMITTING...', successTitle: 'Application Received!', successSub: 'Our team will contact you within 48 hours.' },
+    rentForm: { title: 'Rent', titleGold: 'GPUs', subtitle: 'Tell us your GPU requirements and we will find the perfect match.', company: 'Company Name', contact: 'Contact Name *', email: 'Email *', phone: 'Phone', gpuType: 'GPU Type Needed', gpuCount: 'GPU Count *', usage: 'Usage Type', budget: 'Monthly Budget', duration: 'Rental Duration', notes: 'Additional Notes', submit: 'SUBMIT REQUEST', submitting: 'SUBMITTING...', successTitle: 'Request Received!', successSub: 'We will match you with available GPUs within 24 hours.', usageOptions: [{ v: 'ai_training', l: 'AI Training' }, { v: 'inference', l: 'AI Inference' }, { v: 'rendering', l: '3D Rendering' }, { v: 'scientific', l: 'Scientific Computing' }, { v: 'other', l: 'Other' }], budgetOptions: [{ v: '<1k', l: 'Under $1,000/mo' }, { v: '1k-5k', l: '$1,000-$5,000/mo' }, { v: '5k-20k', l: '$5,000-$20,000/mo' }, { v: '20k+', l: '$20,000+/mo' }], durationOptions: [{ v: '1m', l: '1 Month' }, { v: '3m', l: '3 Months' }, { v: '6m', l: '6 Months' }, { v: '1y', l: '1 Year' }, { v: 'ongoing', l: 'Ongoing' }] },
+    contact: { title: 'Get In', titleGold: 'Touch', subtitle: 'Have questions? Our team responds within 24 hours.', name: 'Full Name *', email: 'Email *', phone: 'Phone', message: 'Message *', submit: 'SEND MESSAGE', submitting: 'SENDING...', successTitle: 'Message Sent!', successSub: 'We will get back to you within 24 hours.', typeOptions: ['Select Type', 'GPU Facility Owner', 'AI Company / GPU Renter', 'Investment Inquiry', 'Partnership', 'Other'] },
+    footer: { tagline: 'THE KING OF COMPUTE' },
   },
   tr: {
-    nav: {
-      howItWorks: 'Nasıl Çalışır',
-      calculator: 'Hesaplayıcı',
-      gpuPricing: 'GPU Fiyatları',
-      listFacility: 'Tesis Listele',
-      rentGpus: 'GPU Kirala',
-      blog: 'Blog',
-      contact: 'İletişim',
-      getStarted: 'Başlayın'
-    },
-    hero: {
-      subtitle: 'Boşta kalan madencilik altyapısını kârlı AI hesaplama merkezlerine dönüştürün.',
-      highlight: 'Hesaplamanın Kralı',
-      calcBtn: 'Kârı Hesapla',
-      contactBtn: 'Bize Ulaşın'
-    },
+    nav: { howItWorks: 'Nasıl Çalışır', calculator: 'Hesaplama', gpuPricing: 'GPU Fiyatları', listFacility: 'Tesis Ekle', rentGpus: 'GPU Kirala', blog: 'Blog', contact: 'İletişim', getStarted: 'BAŞLA' },
+    hero: { subtitle: 'Boşta duran GPU tesisini yapay zeka şirketleriyle buluştur.', highlight: 'Madencilikten fazla kazan. Sıfır risk.', calcBtn: 'KAZANCI HESAPLA', contactBtn: 'İLETİŞİM' },
     stats: [
-      { i: '🌍', n: 'Global', l: 'Ağ' },
-      { i: '⚡', n: '%99.9', l: 'Çalışma Süresi' },
-      { i: '🔒', n: 'Kurumsal', l: 'Güvenlik' },
-      { i: '💎', n: 'Premium', l: 'Destek' }
+      { i: '⚡', n: '%70', l: "AWS'DEN UCUZ" },
+      { i: '🔒', n: 'KVKK', l: 'UYUMLU' },
+      { i: '🌍', n: '7/24', l: 'DESTEK' },
+      { i: '🚀', n: '<48S', l: 'KURULUM SÜRESİ' },
     ],
-    problem: {
-      title: 'Sorun',
-      titleGold: 'vs Çözüm',
-      miningTitle: 'Geleneksel Madencilik',
-      mining: ['Yüksek elektrik maliyetleri', 'Donanım değer kaybı', 'Artan ağ zorluğu', 'Düşük kârlılık'],
-      dwyrexTitle: 'DWYREX Modeli',
-      dwyrex: ['Sıfır elektrik maliyeti', 'Garantili kira geliri', 'AI pazar talebi artışı', 'Pasif gelir akışı']
-    },
-    how: {
-      title: 'Nasıl',
-      titleGold: 'Çalışır',
-      steps: [
-        { s: '01', i: '📋', t: 'Başvuru', d: 'Tesis veya GPU kiralama talebinizi gönderin.' },
-        { s: '02', i: '🔍', t: 'Doğrulama', d: 'Ekibimiz donanımınızı ve konumunuzu doğrular.' },
-        { s: '03', i: '🤝', t: 'Sözleşme', d: 'Güvenli ve şeffaf bir kira sözleşmesi imzalayın.' },
-        { s: '04', i: '🚀', t: 'Dağıtım', d: 'GPU\'larınızı AI hesaplama ağımıza bağlarız.' },
-        { s: '05', i: '💰', t: 'Kazanç', d: 'Aylık ödemeleri otomatik olarak alın.' }
-      ]
-    },
-    calc: {
-      title: 'Kâr',
-      titleGold: 'Hesaplayıcı',
-      gpuType: 'GPU Modeli Seçin',
-      gpuCount: 'GPU Adedi',
-      miningLabel: 'Geleneksel Madencilik Zararı',
-      dwyrexLabel: 'DWYREX Kira Geliri',
-      annualLabel: 'Yıllık Tahmini Gelir'
-    },
-    pricing: {
-      title: 'GPU',
-      titleGold: 'Fiyatlandırma',
-      subtitle: 'Oranlarımızı büyük bulut sağlayıcılarla karşılaştırın. %70\'e varan tasarruf.'
-    },
-    trust: {
-      title: 'Neden',
-      titleGold: 'Güvenin',
-      items: [
-        { i: '🛡️', t: 'Güvenli Sözleşmeler', d: 'Şeffaf koşullarla yasal bağlayıcı anlaşmalar.' },
-        { i: '⚡', t: 'Anında Ödemeler', d: 'Hesabınıza doğrudan aylık otomatik ödemeler.' },
-        { i: '🌐', t: 'Global Ağ', d: 'En iyi AI araştırma ve kurumsal müşterilere bağlı.' },
-        { i: '🔧', t: '7/24 Destek', d: 'Özel teknik ve hesap yönetim ekibi.' }
-      ]
-    },
-    subscribe: {
-      title: 'Güncel',
-      titleGold: 'Kalın',
-      subtitle: 'AI hesaplama pazarı içgörüleri ve kiralama fırsatları için abone olun.',
-      placeholder: 'E-posta adresinizi girin',
-      btn: 'Abone Ol',
-      success: 'Teşekkürler! Başarıyla abone oldunuz.'
-    },
-    facilityForm: {
-      title: 'Tesisinizi',
-      titleGold: 'Listeleyin',
-      subtitle: 'Boşta kalan madencilik çiftliğinizi kârlı bir AI veri merkezine dönüştürün.',
-      ownerName: 'Sahip Adı',
-      ownerEmail: 'Sahip E-posta',
-      ownerPhone: 'Sahip Telefon',
-      country: 'Ülke',
-      city: 'Şehir',
-      gpuType: 'GPU Tipi',
-      gpuCount: 'GPU Adedi',
-      gpuCondition: 'GPU Durumu',
-      electricityCost: 'Elektrik Maliyeti ($/kWh)',
-      coolingQ: 'Soğutma Sistemi?',
-      internetQ: 'Yüksek Hızlı İnternet?',
-      yes: 'Evet',
-      no: 'Hayır',
-      facilitySize: 'Tesis Büyüklüğü (m²)',
-      rentExpect: 'Aylık Kira Beklentisi ($)',
-      notes: 'Ek Notlar',
-      submit: 'Başvuruyu Gönder',
-      submitting: 'Gönderiliyor...',
-      successTitle: 'Başvuru Alındı',
-      successSub: 'Ekibimiz tesisinizi inceleyecek ve 24 saat içinde sizinle iletişime geçecek.'
-    },
-    rentForm: {
-      title: 'GPU',
-      titleGold: 'Kiralayın',
-      subtitle: 'AI iş yükleriniz için rekabetçi oranlarla yüksek performanslı GPU\'lara erişin.',
-      company: 'Şirket Adı',
-      contact: 'İletişim Kişisi',
-      email: 'E-posta',
-      phone: 'Telefon',
-      gpuType: 'İstenen GPU Tipi',
-      gpuCount: 'İstenen GPU Adedi',
-      usage: 'Kullanım Türü',
-      usageOptions: [
-        { v: 'ai_training', l: 'AI Eğitimi' },
-        { v: 'inference', l: 'Çıkarım' },
-        { v: 'rendering', l: '3D Render' },
-        { v: 'other', l: 'Diğer' }
-      ],
-      budget: 'Bütçe Aralığı',
-      budgetOptions: [
-        { v: '1k-5k', l: '$1,000 - $5,000' },
-        { v: '5k-20k', l: '$5,000 - $20,000' },
-        { v: '20k+', l: '$20,000+' }
-      ],
-      duration: 'Kiralama Süresi',
-      durationOptions: [
-        { v: '1-3m', l: '1-3 Ay' },
-        { v: '3-6m', l: '3-6 Ay' },
-        { v: '6-12m', l: '6-12 Ay' },
-        { v: '12m+', l: '12+ Ay' }
-      ],
-      notes: 'Proje Detayları / Notlar',
-      submit: 'Teklif İste',
-      submitting: 'Gönderiliyor...',
-      successTitle: 'Talep Gönderildi',
-      successSub: 'Özel bir teklif hazırlayıp sizinle kısa sürede iletişime geçeceğiz.'
-    },
-    contact: {
-      title: 'Bize',
-      titleGold: 'Ulaşın',
-      subtitle: 'Sorularınız mı var? Ekibimizle iletişime geçin.',
-      name: 'Adınız',
-      email: 'E-posta Adresiniz',
-      phone: 'Telefon Numaranız',
-      typeOptions: ['Genel Soru', 'Tesis Listeleme', 'GPU Kiralama', 'İş Birliği', 'Destek'],
-      message: 'Mesajınız',
-      submit: 'Mesaj Gönder',
-      submitting: 'Gönderiliyor...',
-      successTitle: 'Mesaj Gönderildi',
-      successSub: 'Teşekkürler! 24 saat içinde size dönüş yapacağız.'
-    },
-    footer: {
-      tagline: 'HESAPLAMANIN KRALI'
-    }
-  }
+    problem: { title: 'Madencilik', titleGold: 'Bitti', miningTitle: '❌ GPU Madenciliği', mining: ['Elektrik maliyeti geliri aşıyor', 'Kripto oynaklığı kârı yok ediyor', 'Donanım hızla eskiyor', 'Stabil gelir yok'], dwyrexTitle: '✅ DWYREX', dwyrex: ['Stabil aylık gelir', 'Yapay zeka talebi yılda %300 büyüyor', 'Senin donanımın, bizim müşterilerimiz', 'Tam GDPR/KVKK uyumu'] },
+    how: { title: 'Nasıl', titleGold: 'Çalışır', steps: [{ s: '01', i: '📋', t: 'Tesisini Ekle', d: 'GPU özelliklerini, konumunu ve müsaitliğini gir.' }, { s: '02', i: '🔍', t: 'Eşleştiriyoruz', d: 'Ekibimiz seni doğrulanmış yapay zeka şirketleriyle buluşturur.' }, { s: '03', i: '📝', t: 'Sözleşme İmzala', d: 'Aylık garantili ödemeli basit SLA.' }, { s: '04', i: '💰', t: 'Aylık Kazan', d: 'Her ay stabil gelir al. Zahmetsiz.' }] },
+    calc: { title: 'Kazancını', titleGold: 'Hesapla', gpuType: 'GPU TİPİ', gpuCount: 'GPU SAYISI', miningLabel: 'MADENCİLİK KAYBI/AY', dwyrexLabel: 'DWYREX KAZANCI/AY', annualLabel: 'YILLIK KAZANÇ' },
+    pricing: { title: 'Ne Kadar', titleGold: 'Kazanırsın', subtitle: 'Fiyatlarımız vs bulut sağlayıcı fiyatları' },
+    trust: { title: 'Neden', titleGold: 'Güven', items: [{ i: '🔒', t: 'GDPR & KVKK', d: 'AB ve Türk veri koruma yasalarına tam uyum.' }, { i: '📋', t: 'Yasal SLA', d: 'Bağlayıcı hizmet seviyesi anlaşmaları her iki tarafı korur.' }, { i: '💳', t: 'Garantili Ödeme', d: 'Kullanım oranından bağımsız aylık garantili ödemeler.' }, { i: '🛡️', t: 'Sigorta', d: 'Tüm sözleşmelerde donanım sigortası dahil.' }] },
+    subscribe: { title: 'Güncel', titleGold: 'Kal', subtitle: 'Yeni fırsatlar ve GPU piyasası hakkında bildirim al.', placeholder: 'email@adresin.com', btn: 'ABONE OL', success: '✅ Abone oldunuz!' },
+    facilityForm: { title: 'Tesisini', titleGold: 'Ekle', subtitle: 'GPU tesis bilgilerini gönder, 48 saat içinde ekibimiz seninle iletişime geçsin.', ownerName: 'Ad Soyad *', ownerEmail: 'Email *', ownerPhone: 'Telefon', country: 'Ülke *', city: 'Şehir', gpuType: 'GPU Tipi', gpuCount: 'GPU Adedi *', gpuCondition: 'GPU Durumu', electricityCost: 'Elektrik Maliyeti ($/kWh)', coolingQ: 'Soğutma Sistemi?', internetQ: 'İnternet Bağlantısı?', yes: 'Evet', no: 'Hayır', facilitySize: 'Tesis Büyüklüğü (m²)', rentExpect: 'Aylık Kira Beklentisi ($)', notes: 'Ek Notlar', submit: 'TESİSİ GÖNDER', submitting: 'GÖNDERİLİYOR...', successTitle: 'Başvuru Alındı!', successSub: '48 saat içinde ekibimiz sizinle iletişime geçecek.' },
+    rentForm: { title: 'GPU', titleGold: 'Kirala', subtitle: 'GPU ihtiyaçlarını bize söyle, en uygun eşleşmeyi bulalım.', company: 'Şirket Adı', contact: 'İletişim Kişisi *', email: 'Email *', phone: 'Telefon', gpuType: 'İhtiyaç Duyulan GPU', gpuCount: 'GPU Adedi *', usage: 'Kullanım Amacı', budget: 'Aylık Bütçe', duration: 'Kiralama Süresi', notes: 'Ek Notlar', submit: 'TALEBİ GÖNDER', submitting: 'GÖNDERİLİYOR...', successTitle: 'Talep Alındı!', successSub: '24 saat içinde uygun GPU\'larla eşleştireceğiz.', usageOptions: [{ v: 'ai_training', l: 'Yapay Zeka Eğitimi' }, { v: 'inference', l: 'AI İnference' }, { v: 'rendering', l: '3D Render' }, { v: 'scientific', l: 'Bilimsel Hesaplama' }, { v: 'other', l: 'Diğer' }], budgetOptions: [{ v: '<1k', l: '$1.000/ay altı' }, { v: '1k-5k', l: '$1.000-$5.000/ay' }, { v: '5k-20k', l: '$5.000-$20.000/ay' }, { v: '20k+', l: '$20.000+/ay' }], durationOptions: [{ v: '1m', l: '1 Ay' }, { v: '3m', l: '3 Ay' }, { v: '6m', l: '6 Ay' }, { v: '1y', l: '1 Yıl' }, { v: 'ongoing', l: 'Süresiz' }] },
+    contact: { title: 'İletişime', titleGold: 'Geç', subtitle: 'Sorularınız mı var? Ekibimiz 24 saat içinde yanıt verir.', name: 'Ad Soyad *', email: 'Email *', phone: 'Telefon', message: 'Mesaj *', submit: 'MESAJ GÖNDER', submitting: 'GÖNDERİLİYOR...', successTitle: 'Mesaj Gönderildi!', successSub: '24 saat içinde geri döneceğiz.', typeOptions: ['Tür Seçin', 'GPU Tesis Sahibi', 'Yapay Zeka Şirketi / GPU Kiracı', 'Yatırım Sorusu', 'Ortaklık', 'Diğer'] },
+    footer: { tagline: 'HESAPLAMA KRALI' },
+  },
 };

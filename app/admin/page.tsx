@@ -4,8 +4,11 @@ import { supabase } from '../../lib/supabase';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function Admin() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [loginError, setLoginError] = useState('');
   const [tab, setTab] = useState('dashboard');
   const [contacts, setContacts] = useState<any[]>([]);
   const [facilities, setFacilities] = useState<any[]>([]);
@@ -14,6 +17,34 @@ export default function Admin() {
   const [pageViews, setPageViews] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
+
+  // Session kontrol
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setLoggedIn(!!session);
+      setAuthLoading(false);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setLoggedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => { if (loggedIn) loadData(); }, [loggedIn]);
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLoginError('');
+    setAuthLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setLoginError('Hatalı email veya şifre');
+    setAuthLoading(false);
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    setLoggedIn(false);
+  }
 
   async function loadData() {
     setLoading(true);
@@ -31,8 +62,6 @@ export default function Admin() {
     if (p.data) setPageViews(p.data);
     setLoading(false);
   }
-
-  useEffect(() => { if (loggedIn) loadData(); }, [loggedIn]);
 
   async function updateStatus(table: string, id: string, status: string) {
     await supabase.from(table).update({ status }).eq('id', id);
@@ -96,18 +125,29 @@ export default function Admin() {
     { key: 'analytics', icon: '📈', label: 'Analitik', badge: 0 },
   ];
 
+  if (authLoading) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#050508', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ color: gold, fontSize: '14px', letterSpacing: '4px' }}>YÜKLENİYOR...</div>
+      </div>
+    );
+  }
+
   if (!loggedIn) {
     return (
       <div style={{ minHeight: '100vh', background: '#050508', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div style={{ textAlign: 'center', width: '100%', maxWidth: '380px', padding: '40px' }}>
           <div style={{ fontSize: '48px', marginBottom: '8px' }}>👑</div>
           <h1 style={{ color: gold, fontSize: '24px', letterSpacing: '6px', fontFamily: 'Georgia,serif', marginBottom: '32px' }}>DWYREX ADMIN</h1>
-          <form onSubmit={e => { e.preventDefault(); if (password === 'dwyrex2025king') setLoggedIn(true); else alert('Hatalı şifre'); }}>
-            <input type="password" placeholder="Admin Şifresi" value={password}
-              onChange={e => setPassword(e.target.value)}
-              style={{ padding: '14px', borderRadius: '10px', background: '#0a0a10', border: `1px solid rgba(212,175,55,0.2)`, color: 'white', fontSize: '16px', width: '100%', outline: 'none', marginBottom: '12px' }} />
-            <button type="submit" style={{ width: '100%', background: `linear-gradient(135deg,${gold},#b8860b)`, color: '#050508', padding: '14px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px', border: 'none', cursor: 'pointer', letterSpacing: '2px' }}>
-              GİRİŞ YAP
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {loginError && <div style={{ color: '#f87171', fontSize: '13px', background: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '8px' }}>{loginError}</div>}
+            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required
+              style={{ padding: '14px', borderRadius: '10px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.2)', color: 'white', fontSize: '15px', outline: 'none' }} />
+            <input type="password" placeholder="Şifre" value={password} onChange={e => setPassword(e.target.value)} required
+              style={{ padding: '14px', borderRadius: '10px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.2)', color: 'white', fontSize: '15px', outline: 'none' }} />
+            <button type="submit" disabled={authLoading}
+              style={{ background: `linear-gradient(135deg,${gold},#b8860b)`, color: '#050508', padding: '14px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px', border: 'none', cursor: 'pointer', letterSpacing: '2px' }}>
+              {authLoading ? 'GİRİŞ YAPILIYOR...' : 'GİRİŞ YAP'}
             </button>
           </form>
         </div>
@@ -117,8 +157,6 @@ export default function Admin() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#050508', color: 'white', fontFamily: "'Segoe UI',system-ui,sans-serif", display: 'flex' }}>
-
-      {/* SIDEBAR */}
       <aside style={{ width: '220px', background: '#0a0a12', borderRight: '1px solid rgba(212,175,55,0.08)', display: 'flex', flexDirection: 'column', flexShrink: 0, position: 'sticky', top: 0, height: '100vh' }}>
         <div style={{ padding: '20px', borderBottom: '1px solid rgba(212,175,55,0.08)', textAlign: 'center' }}>
           <div style={{ fontSize: '24px' }}>👑</div>
@@ -136,17 +174,14 @@ export default function Admin() {
           ))}
         </nav>
         <div style={{ padding: '12px', borderTop: '1px solid rgba(212,175,55,0.06)' }}>
-          <button onClick={() => { setLoggedIn(false); setPassword(''); }}
+          <button onClick={handleLogout}
             style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: 'rgba(239,68,68,0.1)', color: '#f87171', cursor: 'pointer', fontSize: '12px' }}>
             Çıkış Yap
           </button>
         </div>
       </aside>
 
-      {/* MAIN */}
       <div style={{ flex: 1, padding: '24px', overflowY: 'auto' }}>
-
-        {/* HEADER */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', gap: '12px', flexWrap: 'wrap' }}>
           <h1 style={{ fontSize: '20px', fontFamily: 'Georgia,serif', margin: 0 }}>
             {menuItems.find(m => m.key === tab)?.icon} {menuItems.find(m => m.key === tab)?.label}
@@ -155,13 +190,12 @@ export default function Admin() {
             <input placeholder="Ara..." value={search} onChange={e => setSearch(e.target.value)}
               style={{ padding: '8px 14px', borderRadius: '8px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.1)', color: 'white', fontSize: '12px', outline: 'none', width: '180px' }} />
             <button onClick={loadData}
-              style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.15)`, color: gold, padding: '8px 18px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontWeight: 'bold' }}>
+              style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: gold, padding: '8px 18px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontWeight: 'bold' }}>
               {loading ? '⏳' : '🔄'} Yenile
             </button>
           </div>
         </div>
 
-        {/* DASHBOARD */}
         {tab === 'dashboard' && (
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '14px', marginBottom: '28px' }}>
@@ -183,10 +217,8 @@ export default function Admin() {
                 </div>
               ))}
             </div>
-
-            {/* CHART */}
             <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '20px', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '16px', fontFamily: 'Georgia,serif' }}>📈 Sayfa Görüntülenmeleri (7 Gün)</h3>
+              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '16px' }}>📈 Sayfa Görüntülenmeleri (7 Gün)</h3>
               <ResponsiveContainer width="100%" height={160}>
                 <BarChart data={getDailyViews()}>
                   <XAxis dataKey="date" tick={{ fill: '#555', fontSize: 11 }} />
@@ -196,8 +228,6 @@ export default function Admin() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-
-            {/* RECENT */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '18px' }}>
                 <h3 style={{ fontSize: '13px', color: gold, marginBottom: '12px' }}>📧 Son İletişimler</h3>
@@ -221,7 +251,6 @@ export default function Admin() {
           </div>
         )}
 
-        {/* CONTACTS */}
         {tab === 'contacts' && (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
@@ -243,9 +272,7 @@ export default function Admin() {
                     <td style={{ padding: '10px' }}>
                       <select value={c.status} onChange={e => updateStatus('contacts', c.id, e.target.value)}
                         style={{ background: 'transparent', color: statusColors[c.status]?.color || '#888', border: `1px solid ${statusColors[c.status]?.color || '#333'}44`, borderRadius: '6px', padding: '3px 6px', fontSize: '11px', cursor: 'pointer' }}>
-                        {Object.keys(statusLabels).map(s => (
-                          <option key={s} value={s} style={{ background: '#111' }}>{statusLabels[s]}</option>
-                        ))}
+                        {Object.keys(statusLabels).map(s => (<option key={s} value={s} style={{ background: '#111' }}>{statusLabels[s]}</option>))}
                       </select>
                     </td>
                     <td style={{ padding: '10px' }}>
@@ -259,7 +286,6 @@ export default function Admin() {
           </div>
         )}
 
-        {/* FACILITIES */}
         {tab === 'facilities' && (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
@@ -281,9 +307,7 @@ export default function Admin() {
                     <td style={{ padding: '10px' }}>
                       <select value={f.status} onChange={e => updateStatus('facilities', f.id, e.target.value)}
                         style={{ background: 'transparent', color: statusColors[f.status]?.color || '#888', border: `1px solid ${statusColors[f.status]?.color || '#333'}44`, borderRadius: '6px', padding: '3px 6px', fontSize: '11px', cursor: 'pointer' }}>
-                        {Object.keys(statusLabels).map(s => (
-                          <option key={s} value={s} style={{ background: '#111' }}>{statusLabels[s]}</option>
-                        ))}
+                        {Object.keys(statusLabels).map(s => (<option key={s} value={s} style={{ background: '#111' }}>{statusLabels[s]}</option>))}
                       </select>
                     </td>
                     <td style={{ padding: '10px' }}>
@@ -297,13 +321,12 @@ export default function Admin() {
           </div>
         )}
 
-        {/* GPU RENTERS */}
         {tab === 'gpu-renters' && (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
-                  {['Tarih', 'Şirket', 'Kişi', 'GPU İhtiyacı', 'Adet', 'Bütçe', 'Durum', 'İşlem'].map(h => (
+                  {['Tarih', 'Şirket', 'Kişi', 'GPU', 'Adet', 'Bütçe', 'Durum', 'İşlem'].map(h => (
                     <th key={h} style={{ padding: '10px', textAlign: 'left', color: gold, fontSize: '10px', letterSpacing: '2px' }}>{h}</th>
                   ))}
                 </tr>
@@ -320,9 +343,7 @@ export default function Admin() {
                     <td style={{ padding: '10px' }}>
                       <select value={g.status} onChange={e => updateStatus('gpu_renters', g.id, e.target.value)}
                         style={{ background: 'transparent', color: statusColors[g.status]?.color || '#888', border: `1px solid ${statusColors[g.status]?.color || '#333'}44`, borderRadius: '6px', padding: '3px 6px', fontSize: '11px', cursor: 'pointer' }}>
-                        {Object.keys(statusLabels).map(s => (
-                          <option key={s} value={s} style={{ background: '#111' }}>{statusLabels[s]}</option>
-                        ))}
+                        {Object.keys(statusLabels).map(s => (<option key={s} value={s} style={{ background: '#111' }}>{statusLabels[s]}</option>))}
                       </select>
                     </td>
                     <td style={{ padding: '10px' }}>
@@ -336,7 +357,6 @@ export default function Admin() {
           </div>
         )}
 
-        {/* SUBSCRIBERS */}
         {tab === 'subscribers' && (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
@@ -364,7 +384,6 @@ export default function Admin() {
           </div>
         )}
 
-        {/* ANALYTICS */}
         {tab === 'analytics' && (
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '14px', marginBottom: '24px' }}>
@@ -381,7 +400,7 @@ export default function Admin() {
               ))}
             </div>
             <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '24px' }}>
-              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '20px', fontFamily: 'Georgia,serif' }}>📈 Günlük Görüntülenme (7 Gün)</h3>
+              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '20px' }}>📈 Günlük Görüntülenme (7 Gün)</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={getDailyViews()}>
                   <XAxis dataKey="date" tick={{ fill: '#555', fontSize: 11 }} />
