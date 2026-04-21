@@ -140,3 +140,153 @@ input:focus, select:focus, textarea:focus {
   background: rgba(212,175,55,0.3);
   color: white;
 }
+/* ====== ANIMATIONS ====== */
+
+/* Fade in up */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Pulse gold */
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); }
+  50% { box-shadow: 0 0 20px 4px rgba(212,175,55,0.15); }
+}
+
+/* Shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Float */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Counter */
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Hero animate */
+header svg {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+header p {
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+header > div:last-child {
+  animation: fadeInUp 1s ease 0.4s both;
+}
+
+/* Stats animate */
+section div[style*="textAlign: center"] {
+  animation: fadeInUp 0.6s ease both;
+}
+
+/* Cards hover effect */
+div[style*="border-radius: 14px"]:hover,
+div[style*="borderRadius:'14px'"]:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Nav links animate */
+nav a {
+  transition: color 0.2s ease, letter-spacing 0.2s ease;
+}
+
+nav a:hover {
+  letter-spacing: 2px !important;
+}
+
+/* Buttons pulse */
+a[style*="linear-gradient(135deg,#d4af37"] {
+  animation: pulseGold 3s ease-in-out infinite;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+a[style*="linear-gradient(135deg,#d4af37"]:hover {
+  transform: translateY(-2px) scale(1.02);
+  opacity: 0.95;
+}
+
+/* Gold text shimmer */
+@keyframes goldShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Section titles */
+h2 span[style*="color:'#d4af37'"],
+h2 span[style*='color:"#d4af37"'] {
+  background: linear-gradient(90deg, #d4af37, #ffd700, #b8860b, #ffd700, #d4af37);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s linear infinite;
+}
+
+/* Form inputs focus glow */
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(212,175,55,0.5) !important;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.08), 0 0 20px rgba(212,175,55,0.05);
+  transition: all 0.3s ease;
+}
+
+/* Scroll reveal - cards */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile menu animation */
+@media (max-width: 768px) {
+  nav > div {
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+/* Page transition */
+body {
+  animation: fadeIn 0.4s ease;
+}
+
+/* Loader bar */
+html::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, #ffd700);
+  z-index: 9999;
+  animation: loadBar 0.6s ease forwards;
+}
+
+@keyframes loadBar {
+  from { width: 0; }
+  to { width: 100%; }
+}
