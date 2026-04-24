@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DWYREX Live Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    .card { background: #18181b; border: 1px solid #3f3f46; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-white p-8">
+
+<div class="max-w-5xl mx-auto">
+  <h1 class="text-4xl font-bold text-center mb-10">DWYREX Live Demo</h1>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="card p-8 rounded-3xl">
+      <h2 class="text-2xl font-semibold mb-6">Hafızaya Ekle</h2>
+      <input id="agentId" placeholder="Agent ID" class="w-full p-4 bg-black border border-zinc-700 rounded-2xl mb-4">
+      <input id="sessionId" placeholder="Session ID" class="w-full p-4 bg-black border border-zinc-700 rounded-2xl mb-4">
+      <textarea id="content" rows="5" placeholder="Hatırlanacak metni yazın..." class="w-full p-4 bg-black border border-zinc-700 rounded-2xl mb-6"></textarea>
+      <button onclick="addMemory()" class="w-full py-5 bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-lg rounded-2xl transition">
+        Hafızaya Kaydet
+      </button>
+    </div>
+
+    <div class="card p-8 rounded-3xl">
+      <h2 class="text-2xl font-semibold mb-6">Semantic Arama</h2>
+      <input id="searchQuery" placeholder="Ne aramak istiyorsunuz?" class="w-full p-4 bg-black border border-zinc-700 rounded-2xl mb-6">
+      <button onclick="searchMemory()" class="w-full py-5 bg-white hover:bg-gray-100 text-black font-bold text-lg rounded-2xl transition">
+        Ara
+      </button>
+      <div id="results" class="mt-8 space-y-4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const EDGE_URL = "https://BURAYA_EDGE_FUNCTION_LINKİNİ_YAZ"; // ← Burayı kendi linkinle değiştir
+
+  async function addMemory() {
+    const content = document.getElementById('content').value.trim();
+    const agentId = document.getElementById('agentId').value.trim() || "demo-agent";
+    const sessionId = document.getElementById('sessionId').value.trim() || "demo-session";
+
+    if (!content) return alert("Lütfen bir metin girin");
+
+    const res = await fetch(EDGE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content, agent_id: agentId, session_id: sessionId })
+    });
+
+    const data = await res.json();
+    alert(data.success ? "✅ Hafızaya eklendi!" : "❌ Hata: " + (data.error || "Bilinmiyor"));
+  }
+
+  async function searchMemory() {
+    alert("Semantic arama özelliği yakında aktif olacak.");
+  }
+</script>
+</body>
+</html>
