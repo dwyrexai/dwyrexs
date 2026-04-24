@@ -98,10 +98,10 @@ export default function Home() {
   const tx = translations[lang];
 
   const p: Record<string,{n:string;m:number;r:number}> = {
-    rtx3090:{n:'RTX 3090',m:-200,r:1800},
-    rtx4090:{n:'RTX 4090',m:-100,r:2200},
-    a100:{n:'A100 40GB',m:-300,r:3200},
-    h100:{n:'H100 80GB',m:-500,r:5000},
+    rtx3090:{n:'RTX 3090',m:-200,r:252},
+    rtx4090:{n:'RTX 4090',m:-100,r:396},
+    a100:{n:'A100 40GB',m:-300,r:1073},
+    h100:{n:'H100 80GB',m:-500,r:1800},
   };
   const s = p[gpu];
   const rent = s.r*(count/100);
@@ -619,10 +619,10 @@ export default function Home() {
         <div style={{display:'grid',
           gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:'20px'}}>
           {[
-            {g:'RTX 3090',v:'24GB',h:'$0.35/hr',a:'$1.10/hr',sv:'68%'},
-            {g:'RTX 4090',v:'24GB',h:'$0.55/hr',a:'$1.80/hr',sv:'69%'},
-            {g:'A100',v:'40GB',h:'$1.49/hr',a:'$4.10/hr',sv:'64%'},
-            {g:'H100',v:'80GB',h:'$2.49/hr',a:'$8.00/hr',sv:'69%'},
+            {g:'RTX 3090',v:'24GB',h:'$0.35/hr',a:'$1.10/hr',sv:'68%',owner:'$0.14/hr'},
+            {g:'RTX 4090',v:'24GB',h:'$0.55/hr',a:'$1.80/hr',sv:'69%',owner:'$0.22/hr'},
+            {g:'A100',v:'40GB',h:'$1.49/hr',a:'$4.10/hr',sv:'64%',owner:'$0.60/hr'},
+            {g:'H100',v:'80GB',h:'$2.49/hr',a:'$8.00/hr',sv:'69%',owner:'$1.00/hr'},
           ].map(item=>(
             <div key={item.g} style={{background:'rgba(212,175,55,0.02)',
               border:'1px solid rgba(212,175,55,0.08)',borderRadius:'14px',
@@ -638,6 +638,10 @@ export default function Home() {
               <div style={{color:'#d4af37',fontSize:'13px',fontWeight:'bold',
                 marginTop:'4px'}}>
                 {lang==='tr'?'Tasarruf':'Save'} {item.sv}
+              </div>
+             <div style={{color:'#4ade80',fontSize:'11px',marginTop:'6px',
+                borderTop:'1px solid rgba(212,175,55,0.1)',paddingTop:'8px'}}>
+                {lang==='tr'?'Tesis ödemesi:':'Facility pays:'} {item.owner}
               </div>
             </div>
           ))}
@@ -789,8 +793,8 @@ export default function Home() {
 
         {/* Dil seçici footer'da da */}
         <div style={{marginTop:'16px',display:'flex',justifyContent:'center',gap:'4px'}}>
-          {(['en','tr'] as Lang[]).map(l => (
-            <button key={l} onClick={() => switchLang(l)}
+         {(['en','tr','de','fr','ar','ja','ko'] as Lang[]).map(l => (
+              <button key={l} onClick={() => switchLang(l)}
               style={{padding:'4px 12px',borderRadius:'6px',border:'none',
                 cursor:'pointer',fontSize:'10px',fontWeight:'bold',
                 letterSpacing:'2px',
