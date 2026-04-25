@@ -117,7 +117,7 @@ export default function Home() {
   // Dil localStorage'dan al
   useEffect(() => {
     const saved = localStorage.getItem('dwyrex_lang') as Lang;
-    if (saved === 'en' || saved === 'tr') setLang(saved);
+    if (['en','tr','de','fr','ar','ja','ko'].includes(saved)) setLang(saved);
   }, []);
 
   function switchLang(l: Lang) {
@@ -402,7 +402,7 @@ export default function Home() {
           {/* Dil Seçici */}
           <div style={{display:'flex',gap:'2px',background:'rgba(255,255,255,0.04)',
             borderRadius:'8px',padding:'3px',border:'1px solid rgba(212,175,55,0.1)'}}>
-            {(['en','tr'] as Lang[]).map(l => (
+            {(['en','tr','de','fr','ar','ja','ko'] as Lang[]).map(l => (
               <button key={l} onClick={() => switchLang(l)}
                 style={{padding:'6px 14px',borderRadius:'6px',border:'none',
                   cursor:'pointer',fontSize:'11px',fontWeight:'bold',
@@ -639,10 +639,7 @@ export default function Home() {
                 marginTop:'4px'}}>
                 {lang==='tr'?'Tasarruf':'Save'} {item.sv}
               </div>
-             <div style={{color:'#4ade80',fontSize:'11px',marginTop:'6px',
-                borderTop:'1px solid rgba(212,175,55,0.1)',paddingTop:'8px'}}>
-                {lang==='tr'?'Tesis ödemesi:':'Facility pays:'} {item.owner}
-              </div>
+             
             </div>
           ))}
         </div>
