@@ -383,6 +383,70 @@ export default function Home() {
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
   }, [popupShown]);
 
+  // ====== REFERRAL BOX ======
+  function ReferralBox({ lang }: { lang: Lang }) {
+    const [refEmail, setRefEmail] = useState('');
+    const [refCode, setRefCode] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    async function getCode() {
+      if (!refEmail) return alert(lang === 'tr' ? 'Email girin' : 'Enter email');
+      setLoading(true);
+      const res = await fetch('/api/referral', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create', referrer_email: refEmail }),
+      });
+      const data = await res.json();
+      if (data.success) setRefCode(data.code);
+      else alert('Hata: ' + data.error);
+      setLoading(false);
+    }
+
+    return (
+      <div style={{background:'rgba(212,175,55,0.03)',border:'1px solid rgba(212,175,55,0.12)',
+        borderRadius:'16px',padding:'28px'}}>
+        {!refCode ? (
+          <>
+            <input type="email" placeholder={lang==='tr'?'Email adresiniz':'Your email'}
+              value={refEmail} onChange={e=>setRefEmail(e.target.value)}
+              style={{padding:'14px',borderRadius:'10px',background:'#0a0a10',
+                border:'1px solid rgba(212,175,55,0.15)',color:'white',fontSize:'14px',
+                width:'100%',outline:'none',boxSizing:'border-box',marginBottom:'12px'}}/>
+            <button onClick={getCode} disabled={loading}
+              style={{width:'100%',background:'linear-gradient(135deg,#d4af37,#b8860b)',
+                color:'#050508',padding:'14px',borderRadius:'10px',fontWeight:'bold',
+                fontSize:'14px',border:'none',cursor:'pointer',letterSpacing:'2px'}}>
+              {loading ? '...' : lang==='tr'?'REFERRAL KODU AL':'GET MY CODE'}
+            </button>
+          </>
+        ) : (
+          <>
+            <p style={{color:'#4ade80',marginBottom:'12px',fontSize:'14px'}}>
+              ✅ {lang==='tr'?'Referral kodunuz hazır!':'Your referral code is ready!'}
+            </p>
+            <div style={{background:'#0a0a10',border:'1px solid rgba(212,175,55,0.3)',
+              borderRadius:'10px',padding:'16px',fontSize:'24px',fontWeight:'bold',
+              color:'#d4af37',letterSpacing:'4px',fontFamily:'Georgia,serif',
+              marginBottom:'12px'}}>
+              {refCode}
+            </div>
+            <p style={{color:'#666',fontSize:'12px'}}>
+              {lang==='tr'
+                ? 'Bu kodu arkadaşlarınla paylaş. Kullandıklarında $50 komisyon kazanırsın!'
+                : 'Share this code with friends. Earn $50 when they use it!'}
+            </p>
+            <button onClick={() => {navigator.clipboard.writeText(refCode); alert('Kopyalandı!');}}
+              style={{marginTop:'12px',background:'rgba(212,175,55,0.1)',border:'1px solid rgba(212,175,55,0.2)',
+                color:'#d4af37',padding:'10px 24px',borderRadius:'8px',cursor:'pointer',fontSize:'13px'}}>
+              📋 {lang==='tr'?'Kopyala':'Copy'}
+            </button>
+          </>
+        )}
+      </div>
+    );
+  }
+
   // ====== RETURN ======
   return (
     <div style={{minHeight:'100vh',background:'#050508',color:'white',
@@ -621,7 +685,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ====== GPU PRICING ====== */}
+      {/* ====== CANLI GPU FİYATLARI ====== */}
       <section id="gpupricing" style={{padding:'90px 20px',maxWidth:'900px',
         margin:'0 auto',borderTop:'1px solid rgba(212,175,55,0.06)'}}>
         <h2 style={{textAlign:'center',fontSize:'34px',marginBottom:'20px',
@@ -633,6 +697,11 @@ export default function Home() {
           {tx.pricing.subtitle}</p>
         <div style={{display:'grid',
           gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:'20px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center',marginBottom:'24px'}}>
+            <div style={{width:'8px',height:'8px',borderRadius:'50%',background:'#4ade80',
+              animation:'pulse 2s infinite'}}/>
+            <span style={{color:'#4ade80',fontSize:'12px',letterSpacing:'2px'}}>CANLI FİYATLAR</span>
+          </div>
           {[
             {g:'RTX 3090',v:'24GB',h:'$0.35/hr',a:'$1.10/hr',sv:'68%',owner:'$0.14/hr'},
             {g:'RTX 4090',v:'24GB',h:'$0.55/hr',a:'$1.80/hr',sv:'69%',owner:'$0.22/hr'},
@@ -680,6 +749,22 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ====== REFERRAL ====== */}
+      <section style={{padding:'60px 20px',maxWidth:'600px',margin:'0 auto',textAlign:'center',
+        borderTop:'1px solid rgba(212,175,55,0.06)'}}>
+        <div style={{fontSize:'40px',marginBottom:'12px'}}>🤝</div>
+        <h2 style={{fontSize:'28px',fontFamily:'Georgia,serif',marginBottom:'12px'}}>
+          {lang==='tr'?'Arkadaşını Getir':'Refer & Earn'}
+          {' '}<span style={{color:'#d4af37'}}>{lang==='tr'?'$50 Kazan':'$50 Commission'}</span>
+        </h2>
+        <p style={{color:'#666',fontSize:'14px',marginBottom:'28px'}}>
+          {lang==='tr'
+            ? 'Her başarılı yönlendirme için $50 komisyon kazan. Tesis sahibi veya GPU kiracısı olsun.'
+            : 'Earn $50 for every successful referral. Whether facility owner or GPU renter.'}
+        </p>
+        <ReferralBox lang={lang}/>
       </section>
 
       {/* ====== SUBSCRIBE ====== */}
