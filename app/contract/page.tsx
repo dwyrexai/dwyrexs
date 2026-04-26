@@ -5,10 +5,20 @@ import { supabase } from '../../lib/supabase';
 export default function Contract() {
   const [step, setStep] = useState(1);
   const [type, setType] = useState('facility');
+ const facilityRates: Record<string, number> = {
+    'RTX 3090': 140, 'RTX 4090': 220, 'A100': 596, 'H100': 1000,
+  };
+  const renterRates: Record<string, number> = {
+    'RTX 3090': 350, 'RTX 4090': 550, 'A100': 1490, 'H100': 2500,
+  };
+  const rates = type === 'facility' ? facilityRates : renterRates;
+
   const [form, setForm] = useState({
     client_name: '', client_email: '', facility_name: '',
-    gpu_type: 'RTX 3090', gpu_count: 100, monthly_payment: 252, duration_months: 12,
+    gpu_type: 'RTX 3090', gpu_count: 100, duration_months: 12,
   });
+
+  const monthlyPayment = rates[form.gpu_type] * (form.gpu_count / 100);
   const [signed, setSigned] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,9 +36,9 @@ Taraflar:
 Sözleşme Detayları:
 - GPU Tipi: ${form.gpu_type}
 - GPU Adedi: ${form.gpu_count} adet
-- Aylık Ödeme: $${form.monthly_payment * (form.gpu_count / 100)}
+- Aylık Ödeme: $${monthlyPayment}
 - Sözleşme Süresi: ${form.duration_months} ay
-- Toplam Değer: $${form.monthly_payment * (form.gpu_count / 100) * form.duration_months}
+- Toplam Değer: $${monthlyPayment * form.duration_months}
 
 Koşullar:
 1. DWYREX, GPU'ları yalnızca meşru yapay zeka iş yükleri için kullanacaktır.
@@ -49,9 +59,9 @@ Taraflar:
 Sözleşme Detayları:
 - GPU Tipi: ${form.gpu_type}
 - GPU Adedi: ${form.gpu_count} adet
-- Aylık Ücret: $${form.monthly_payment * (form.gpu_count / 100)}
+- Aylık Ücret: $${monthlyPayment}
 - Kiralama Süresi: ${form.duration_months} ay
-- Toplam Tutar: $${form.monthly_payment * (form.gpu_count / 100) * form.duration_months}
+- Toplam Tutar: $${monthlyPayment * form.duration_months}
 
 Koşullar:
 1. GPU'lar yalnızca yasal iş yükleri için kullanılabilir.
@@ -73,7 +83,7 @@ Koşullar:
       facility_name: form.facility_name,
       gpu_type: form.gpu_type,
       gpu_count: form.gpu_count,
-      monthly_payment: form.monthly_payment * (form.gpu_count / 100),
+      monthly_payment: monthlyPayment,
       duration_months: form.duration_months,
       status: 'signed',
       signed_at: new Date().toISOString(),
@@ -106,9 +116,9 @@ Koşullar:
             <div style={{background:'rgba(212,175,55,0.05)',border:'1px solid rgba(212,175,55,0.15)',borderRadius:'16px',padding:'32px',marginBottom:'32px',textAlign:'left'}}>
               <h3 style={{color:gold,marginBottom:'16px'}}>📋 Özet</h3>
               <p>GPU: <strong>{form.gpu_type} × {form.gpu_count}</strong></p>
-              <p>Aylık: <strong style={{color:gold}}>${form.monthly_payment * (form.gpu_count / 100)}</strong></p>
+              <p>Aylık: <strong style={{color:gold}}>${monthlyPayment}</strong></p>
               <p>Süre: <strong>{form.duration_months} ay</strong></p>
-              <p>Toplam: <strong style={{color:gold}}>${form.monthly_payment * (form.gpu_count / 100) * form.duration_months}</strong></p>
+              <p>Toplam: <strong style={{color:gold}}>${monthlyPayment * form.duration_months}</strong></p>
             </div>
             <p style={{color:'#666',fontSize:'14px'}}>Ekibimiz 24 saat içinde sizinle iletişime geçecektir.</p>
             <a href="/" style={{display:'inline-block',marginTop:'24px',background:'linear-gradient(135deg,#d4af37,#b8860b)',color:'#050508',padding:'14px 32px',borderRadius:'8px',fontWeight:'bold',textDecoration:'none',letterSpacing:'2px'}}>
@@ -189,11 +199,11 @@ Koşullar:
                 <div style={{background:'rgba(212,175,55,0.05)',border:'1px solid rgba(212,175,55,0.15)',borderRadius:'12px',padding:'20px',marginBottom:'20px'}}>
                   <div style={{display:'flex',justifyContent:'space-between',marginBottom:'8px'}}>
                     <span style={{color:'#777'}}>Aylık Ödeme:</span>
-                    <span style={{color:gold,fontWeight:'bold',fontSize:'18px'}}>${form.monthly_payment*(form.gpu_count/100)}</span>
+                    <span style={{color:gold,fontWeight:'bold',fontSize:'18px'}}>${monthlyPayment}</span>
                   </div>
                   <div style={{display:'flex',justifyContent:'space-between'}}>
                     <span style={{color:'#777'}}>Toplam ({form.duration_months} ay):</span>
-                    <span style={{color:'#ffd700',fontWeight:'bold',fontSize:'20px'}}>${form.monthly_payment*(form.gpu_count/100)*form.duration_months}</span>
+                    <span style={{color:'#ffd700',fontWeight:'bold',fontSize:'20px'}}>${monthlyPayment*form.duration_months}</span>
                   </div>
                 </div>
                 <div style={{display:'flex',gap:'12px'}}>
