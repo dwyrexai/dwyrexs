@@ -469,7 +469,8 @@ export default function Home() {
             {label:tx.nav.listFacility,href:'#facility-form'},
             {label:tx.nav.rentGpus,href:'#rent-form'},
             {label:tx.nav.blog,href:'/blog'},
-            {label:tx.nav.contact,href:'#contact'},
+           {label:tx.nav.contact,href:'#contact'},
+            {label:'📋 Sözleşme',href:'/contract'},
           ].map(link=>(
             <a key={link.label} href={link.href}
               style={{color:'#777',textDecoration:'none',
