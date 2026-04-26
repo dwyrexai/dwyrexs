@@ -1,0 +1,17 @@
+{
+  "name": "DWYREX — The King of Compute",
+  "short_name": "DWYREX",
+  "description": "GPU Rental Platform — Connect idle GPU facilities with AI companies",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050508",
+  "theme_color": "#d4af37",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

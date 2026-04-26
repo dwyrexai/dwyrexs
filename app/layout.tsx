@@ -35,6 +35,17 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-D17WPL97YX"></script>
+        <script dangerouslySetInnerHTML={{__html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-D17WPL97YX');
+        `}} />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#d4af37" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="DWYREX" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href="https://dwyrex.vercel.app" />
       </head>
