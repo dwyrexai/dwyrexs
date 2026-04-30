@@ -18,7 +18,6 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
 
-  // Session kontrol
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setLoggedIn(!!session);
@@ -37,7 +36,7 @@ export default function Admin() {
     setLoginError('');
     setAuthLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setLoginError('Hatalı email veya şifre');
+    if (error) setLoginError('Hatali email veya sifre');
     setAuthLoading(false);
   }
 
@@ -69,7 +68,7 @@ export default function Admin() {
   }
 
   async function deleteRecord(table: string, id: string) {
-    if (!confirm('Silmek istediğinize emin misiniz?')) return;
+    if (!confirm('Silmek istediginize emin misiniz?')) return;
     await supabase.from(table).delete().eq('id', id);
     loadData();
   }
@@ -112,23 +111,28 @@ export default function Admin() {
   };
 
   const statusLabels: Record<string, string> = {
-    new: '🔵 Yeni', contacted: '🟡 İletişime Geçildi',
-    in_progress: '🟣 Devam Ediyor', completed: '✅ Tamamlandı', rejected: '❌ Reddedildi'
+    new: 'Yeni',
+    contacted: 'Iletisime Gecildi',
+    in_progress: 'Devam Ediyor',
+    completed: 'Tamamlandi',
+    rejected: 'Reddedildi',
   };
 
   const menuItems = [
     { key: 'dashboard', icon: '📊', label: 'Dashboard', badge: totalNew },
-    { key: 'contacts', icon: '📧', label: 'İletişim', badge: newContacts },
+    { key: 'contacts', icon: '📧', label: 'Iletisim', badge: newContacts },
     { key: 'facilities', icon: '🏭', label: 'Tesisler', badge: newFacilities },
-    { key: 'gpu-renters', icon: '🖥️', label: 'GPU Kiracılar', badge: newRenters },
+    { key: 'gpu-renters', icon: '🖥️', label: 'GPU Kiracilar', badge: newRenters },
     { key: 'subscribers', icon: '📮', label: 'Aboneler', badge: 0 },
     { key: 'analytics', icon: '📈', label: 'Analitik', badge: 0 },
+    { key: 'campaign', icon: '📨', label: 'Email Kampanya', badge: 0 },
+    { key: 'monitoring', icon: '📡', label: 'Monitoring', badge: 0 },
   ];
 
   if (authLoading) {
     return (
       <div style={{ minHeight: '100vh', background: '#050508', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div style={{ color: gold, fontSize: '14px', letterSpacing: '4px' }}>YÜKLENİYOR...</div>
+        <div style={{ color: gold, fontSize: '14px', letterSpacing: '4px' }}>YUKLENIYOR...</div>
       </div>
     );
   }
@@ -143,11 +147,11 @@ export default function Admin() {
             {loginError && <div style={{ color: '#f87171', fontSize: '13px', background: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '8px' }}>{loginError}</div>}
             <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required
               style={{ padding: '14px', borderRadius: '10px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.2)', color: 'white', fontSize: '15px', outline: 'none' }} />
-            <input type="password" placeholder="Şifre" value={password} onChange={e => setPassword(e.target.value)} required
+            <input type="password" placeholder="Sifre" value={password} onChange={e => setPassword(e.target.value)} required
               style={{ padding: '14px', borderRadius: '10px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.2)', color: 'white', fontSize: '15px', outline: 'none' }} />
             <button type="submit" disabled={authLoading}
               style={{ background: `linear-gradient(135deg,${gold},#b8860b)`, color: '#050508', padding: '14px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px', border: 'none', cursor: 'pointer', letterSpacing: '2px' }}>
-              {authLoading ? 'GİRİŞ YAPILIYOR...' : 'GİRİŞ YAP'}
+              {authLoading ? 'GIRIS YAPILIYOR...' : 'GIRIS YAP'}
             </button>
           </form>
         </div>
@@ -176,7 +180,7 @@ export default function Admin() {
         <div style={{ padding: '12px', borderTop: '1px solid rgba(212,175,55,0.06)' }}>
           <button onClick={handleLogout}
             style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: 'rgba(239,68,68,0.1)', color: '#f87171', cursor: 'pointer', fontSize: '12px' }}>
-            Çıkış Yap
+            Cikis Yap
           </button>
         </div>
       </aside>
@@ -200,11 +204,11 @@ export default function Admin() {
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '14px', marginBottom: '28px' }}>
               {[
-                { icon: '📧', label: 'İletişim', value: contacts.length, n: newContacts, color: '#60a5fa' },
+                { icon: '📧', label: 'Iletisim', value: contacts.length, n: newContacts, color: '#60a5fa' },
                 { icon: '🏭', label: 'Tesisler', value: facilities.length, n: newFacilities, color: '#a78bfa' },
-                { icon: '🖥️', label: 'GPU Kiracı', value: gpuRenters.length, n: newRenters, color: '#fbbf24' },
+                { icon: '🖥️', label: 'GPU Kiraci', value: gpuRenters.length, n: newRenters, color: '#fbbf24' },
                 { icon: '📮', label: 'Abone', value: subscribers.length, n: 0, color: '#4ade80' },
-                { icon: '👁️', label: 'Görüntülenme', value: pageViews.length, n: 0, color: '#f472b6' },
+                { icon: '👁️', label: 'Goruntuleme', value: pageViews.length, n: 0, color: '#f472b6' },
                 { icon: '⚡', label: 'Toplam GPU', value: totalGpus, n: 0, color: '#38bdf8' },
               ].map(card => (
                 <div key={card.label} style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '18px' }}>
@@ -218,7 +222,7 @@ export default function Admin() {
               ))}
             </div>
             <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '20px', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '16px' }}>📈 Sayfa Görüntülenmeleri (7 Gün)</h3>
+              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '16px' }}>📈 Sayfa Goruntulenmeler (7 Gun)</h3>
               <ResponsiveContainer width="100%" height={160}>
                 <BarChart data={getDailyViews()}>
                   <XAxis dataKey="date" tick={{ fill: '#555', fontSize: 11 }} />
@@ -230,7 +234,7 @@ export default function Admin() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '18px' }}>
-                <h3 style={{ fontSize: '13px', color: gold, marginBottom: '12px' }}>📧 Son İletişimler</h3>
+                <h3 style={{ fontSize: '13px', color: gold, marginBottom: '12px' }}>📧 Son Iletisimler</h3>
                 {contacts.slice(0, 5).map(c => (
                   <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.03)', fontSize: '12px' }}>
                     <span style={{ fontWeight: 'bold' }}>{c.name}</span>
@@ -256,7 +260,7 @@ export default function Admin() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
-                  {['Tarih', 'İsim', 'Email', 'Tür', 'Mesaj', 'Durum', 'İşlem'].map(h => (
+                  {['Tarih', 'Isim', 'Email', 'Tur', 'Mesaj', 'Durum', 'Islem'].map(h => (
                     <th key={h} style={{ padding: '10px', textAlign: 'left', color: gold, fontSize: '10px', letterSpacing: '2px' }}>{h}</th>
                   ))}
                 </tr>
@@ -291,7 +295,7 @@ export default function Admin() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
-                  {['Tarih', 'Sahip', 'Konum', 'GPU', 'Adet', 'Durum', 'İşlem'].map(h => (
+                  {['Tarih', 'Sahip', 'Konum', 'GPU', 'Adet', 'Durum', 'Islem'].map(h => (
                     <th key={h} style={{ padding: '10px', textAlign: 'left', color: gold, fontSize: '10px', letterSpacing: '2px' }}>{h}</th>
                   ))}
                 </tr>
@@ -326,7 +330,7 @@ export default function Admin() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
-                  {['Tarih', 'Şirket', 'Kişi', 'GPU', 'Adet', 'Bütçe', 'Durum', 'İşlem'].map(h => (
+                  {['Tarih', 'Sirket', 'Kisi', 'GPU', 'Adet', 'Butce', 'Durum', 'Islem'].map(h => (
                     <th key={h} style={{ padding: '10px', textAlign: 'left', color: gold, fontSize: '10px', letterSpacing: '2px' }}>{h}</th>
                   ))}
                 </tr>
@@ -362,7 +366,7 @@ export default function Admin() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
-                  {['Tarih', 'Email', 'Kaynak', 'İşlem'].map(h => (
+                  {['Tarih', 'Email', 'Kaynak', 'Islem'].map(h => (
                     <th key={h} style={{ padding: '10px', textAlign: 'left', color: gold, fontSize: '10px', letterSpacing: '2px' }}>{h}</th>
                   ))}
                 </tr>
@@ -388,8 +392,8 @@ export default function Admin() {
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '14px', marginBottom: '24px' }}>
               {[
-                { label: 'TOPLAM GÖRÜNTÜLENME', value: pageViews.length, color: '#60a5fa' },
-                { label: 'BUGÜN', value: pageViews.filter(pv => new Date(pv.created_at).toDateString() === new Date().toDateString()).length, color: gold },
+                { label: 'TOPLAM GORUNTULEME', value: pageViews.length, color: '#60a5fa' },
+                { label: 'BUGUN', value: pageViews.filter(pv => new Date(pv.created_at).toDateString() === new Date().toDateString()).length, color: gold },
                 { label: 'ABONELER', value: subscribers.length, color: '#4ade80' },
                 { label: 'TOPLAM FORM', value: contacts.length + facilities.length + gpuRenters.length, color: '#f472b6' },
               ].map(card => (
@@ -400,7 +404,7 @@ export default function Admin() {
               ))}
             </div>
             <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '24px' }}>
-              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '20px' }}>📈 Günlük Görüntülenme (7 Gün)</h3>
+              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '20px' }}>📈 Gunluk Goruntuleme (7 Gun)</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={getDailyViews()}>
                   <XAxis dataKey="date" tick={{ fill: '#555', fontSize: 11 }} />
@@ -412,6 +416,51 @@ export default function Admin() {
             </div>
           </div>
         )}
+
+        {tab === 'campaign' && (
+          <div>
+            <div style={{ background: 'rgba(212,175,55,0.02)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '14px', padding: '24px', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '14px', color: gold, marginBottom: '20px' }}>📨 Email Kampanyasi Gonder</h3>
+              <p style={{ color: '#555', fontSize: '13px', marginBottom: '20px' }}>Tum abonelere ({subscribers.length} kisi) email gonder.</p>
+              <input id="camp-subject" placeholder="Email konusu..."
+                style={{ width: '100%', padding: '12px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.15)', borderRadius: '8px', color: 'white', fontSize: '13px', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }} />
+              <textarea id="camp-message" rows={8} placeholder="Email icerigi (HTML desteklenir)..."
+                style={{ width: '100%', padding: '12px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.15)', borderRadius: '8px', color: 'white', fontSize: '13px', marginBottom: '12px', resize: 'vertical' as 'vertical', boxSizing: 'border-box' as 'border-box' }} />
+              <input id="camp-key" placeholder="Admin secret key..." type="password"
+                style={{ width: '100%', padding: '12px', background: '#0a0a10', border: '1px solid rgba(212,175,55,0.15)', borderRadius: '8px', color: 'white', fontSize: '13px', marginBottom: '16px', boxSizing: 'border-box' as 'border-box' }} />
+              <button onClick={async () => {
+                const subject = (document.getElementById('camp-subject') as HTMLInputElement).value;
+                const message = (document.getElementById('camp-message') as HTMLTextAreaElement).value;
+                const adminKey = (document.getElementById('camp-key') as HTMLInputElement).value;
+                if (!subject || !message || !adminKey) return alert('Tum alanlari doldurun!');
+                if (!confirm(`${subscribers.length} aboneye email gonderilecek. Emin misiniz?`)) return;
+                const res = await fetch('/api/campaign', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ subject, message, adminKey }),
+                });
+                const data = await res.json();
+                if (data.success) alert(`Gonderildi! ${data.sent} basarili, ${data.failed} basarisiz.`);
+                else alert('Hata: ' + data.error);
+              }}
+                style={{ background: 'linear-gradient(135deg,#d4af37,#b8860b)', color: '#050508', padding: '14px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px', border: 'none', cursor: 'pointer', width: '100%', letterSpacing: '2px' }}>
+                📨 KAMPANYA GONDER
+              </button>
+            </div>
+          </div>
+        )}
+
+        {tab === 'monitoring' && (
+          <div style={{ textAlign: 'center', padding: '60px' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📡</div>
+            <h2 style={{ color: gold, fontFamily: 'Georgia,serif', marginBottom: '12px' }}>GPU Monitoring Dashboard</h2>
+            <p style={{ color: '#555', marginBottom: '24px' }}>Tum GPU sunucularini gercek zamanli izle</p>
+            <a href="/monitoring" style={{ background: 'linear-gradient(135deg,#d4af37,#b8860b)', color: '#050508', padding: '14px 32px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px', textDecoration: 'none', letterSpacing: '2px' }}>
+              MONITORING'E GIT →
+            </a>
+          </div>
+        )}
+
       </div>
     </div>
   );
